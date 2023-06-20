@@ -4,6 +4,7 @@ from user import models as usermodel
 # Create your models here.
 class Project(models.Model):
     owner=models.ForeignKey(usermodel.Profile, on_delete=models.CASCADE,null=True,blank=True)
+    
     title=models.CharField(max_length=50)
     description=models.TextField(null=True,blank=True)
     demo_link=models.CharField(max_length=2000,null=True,blank=True)

@@ -4,7 +4,8 @@ import uuid
 
 # Create your models here.
 class Profile(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True,editable=False)
+    username=models.CharField(max_length=50,blank=True,null=True)
     name=models.CharField(max_length=200,blank=True,null=True)
     email=models.EmailField(blank=True,null=True)
     location=models.CharField(max_length=200,null=True,blank=True)
@@ -16,7 +17,7 @@ class Profile(models.Model):
     youtube=models.CharField(max_length=200,blank=True,null=True)
     id=models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
     def __str__(self):
-        return self.name
+        return self.username
 class Skills(models.Model):
     owner=models.ForeignKey(Profile,on_delete=models.CASCADE,null=True,blank=True)
     name=models.CharField(max_length=200,blank=True,null=True)
@@ -28,5 +29,3 @@ class Skills(models.Model):
     def __str__(self):
         return self.name 
 
-# post_save.connect(profileUpdated,Profile)
-# post_delete.connect(deleteUser,Profile)        
