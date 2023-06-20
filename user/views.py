@@ -45,31 +45,36 @@ def logOut(request):
     logout(request)
     messages.error(request,'User was logged out successfully !')  
     return redirect('login')
-
 def register(request):
-    page='register'
-    form=forms.CustomUserForm()
-    context={'page':page,'form':form}
+    page = 'register'
+    form = UserCreationForm()
 
-    if request.method=='POST':
-        form=forms.CustomUserForm(request.POST)
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user=form.save(commit=False)
-            user.username=user.username.lower()
+            user = form.save(commit=False)
+            user.username = user.username.lower()
             user.save()
-            messages.success(request,"User was created")
+
+            messages.success(request, 'User account was created!')
+
+            login(request, user)
             return redirect('index')
+
         else:
-            messages.error(request,"Error Occured")
+            messages.success(
+                request, 'An error has occurred during registration')
+
+    context = {'page': page, 'form': form}
+    return render(request, 'user/login_register.html', context)
 
 
-
-
-    return render(request,'user/login_register.html',context)
 @login_required(login_url='login')
-def userAccount (request):
-    user=request.user.Profile
+def userAccount(request):
+    profile = request.user.profile
 
+    skills = profile.skills_set.all()
+    projects = profile.project_set.all()
 
-    context={'profile':user}
-    return render(request,"user/account.html",context)
+    context = {'profile': profile, 'skills': skills, 'projects': projects}
+    return render(request, 'user/account.html', context)
