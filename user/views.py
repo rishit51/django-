@@ -1,15 +1,19 @@
 from django.shortcuts import render,redirect
-from .models import Profile
+from .models import Profile,Skills
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .import forms
+from django.db.models import Q
+from .utils import searchProfiles
 # Create your views here.
 def profiles(request):
-    profile=Profile.objects.all()
-    return render(request,'user/profiles.html',{'profiles':profile})
+    
+    profiles,search_query=searchProfiles(request)
+    return render(request,'user/profiles.html',{'profiles':profiles,'search':search_query})
+
 def profile(request,uid):
     profile=Profile.objects.get(id=uid)
     topSkill=profile.skills_set.exclude(description__exact='')

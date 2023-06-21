@@ -1,14 +1,21 @@
 from django.shortcuts import render,redirect
 from .forms import ProjectForm
-from .models import Project
+from .models import Project,Tag
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
+
 # Create your views here.
 
 def index(request):
-    projects=Project.objects.all()
-    msg='Hello this is a message'
-    return render(request,'projects/projects.html',{'msg':msg,'projects':projects})
+    search_query=""
+
+    if request.GET.get('search_query'):
+        search_query=request.GET.get('search_query')
+    tags=Tag.objects.filter(name=search_query)    
+
+    projects=Project.objects.distinct().filter(Q(title__icontains=search_query)|Q(description__icontains=search_query)|Q(owner__name__icontains=search_query)|Q(tags__in=tags))    
+    return render(request,'projects/projects.html',{'search_query':search_query,'projects':projects})
 def project(request,pk):
     project=Project.objects.get(id=pk)
     tag=project.tags.all()
