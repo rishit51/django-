@@ -9,6 +9,9 @@ urlpatterns = [
     path('account/',views.userAccount,name="account"),
     path('edit-account/',views.editAccount,name='edit-account'),
     path('create-skill/',views.createSkill,name='createskill'),
-    path('update-skill/<str:pk>',views.updateSkill,name='updateskill'),path('delete-skill/<str:pk>',views.deleteSkill,name='deleteskill')
+    path('update-skill/<str:pk>',views.updateSkill,name='updateskill'),path('delete-skill/<str:pk>',views.deleteSkill,name='deleteskill'),
+    path('message/<str:id>',views.message,name='message'),
+    path('inbox/',views.inbox,name='inbox'),
+    path('send-message/<str:pk>',views.createMessage,name='createmess')
 
 ]
