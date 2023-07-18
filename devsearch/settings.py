@@ -42,12 +42,15 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
 
 
-    'rest_framework'
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
@@ -141,3 +144,15 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='pridefoot@gmail.com'
 EMAIL_HOST_PASSWORD='daenzgidemmrxhvp'
+
+
+REST_FRAMEWORK = {
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+   
+}
+
+CORS_ALLOW_ALL_ORIGINS=True
